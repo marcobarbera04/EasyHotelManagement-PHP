@@ -1,0 +1,120 @@
+body {
+  background-color: beige;
+  margin: 0;
+}
+
+.head {
+  background-color: bisque;
+  text-align: center;
+  padding: 1px;
+}
+
+H1 {
+  font-size: 50px;
+  color: black;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: Arial;
+}
+
+.Redirect {
+  font-family: Arial;
+  border-left: 8px solid red;
+  background-color: lavender;
+  display: inline-block;
+  padding-top: .5%;
+  padding-right: 1%;
+  padding-bottom: .5%;
+  padding-left: 1%;
+}
+
+/*.Redirect {
+  margin-top: 0.5%;
+  margin-bottom: 0.5%;
+  margin-left: 1%;
+  font-family: Arial;
+  border-left: 8px solid red;
+  background-color: aqua;
+  display:inline-block;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+  padding-right: 1%;
+  padding-left: 1%;
+}*/
+
+table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+  background-color: lavenderblush;
+}
+
+tr:nth-child(odd) {
+  background-color: white;
+}
+
+th {
+  /*word-wrap: break-word;*/
+  background-color: lavender;
+  color: black;
+  padding: .3%;
+}
+
+td {
+  /*word-wrap: break-word;*/
+  text-align: center;
+  padding: .3%;
+}
+
+
+
+.contenitore-tabella{
+  overflow-x: auto;
+  width: 100%;
+  padding-top: 0%;
+  padding-right: 1%;
+  padding-bottom: 1%;
+  padding-left: 1%;
+  box-sizing: border-box;
+}
+
+.contenitore-redirect {
+  padding-top: 1%;
+  padding-right: 1%;
+  padding-bottom: 0%;
+  padding-left: 1%;
+}
+
+.contenitore-modifiche {
+  background-color: lavenderblush;
+  margin-top: 1%;
+  margin-right: 1%;
+  margin-bottom: 1%;
+  margin-left: 1%;
+  padding: 2%;
+}
+
+.testo-modifica {
+  font-family: Arial;
+}
+
+input[type='text'] {
+  background-color: white;
+  margin-top: 1%;
+  margin-right: 2%;
+  margin-bottom: 1%;
+  margin-left: 2%;
+  font-family: Arial;
+  border-style: solid;
+  border-radius: 5px;
+  border-width: .8px;
+  border-color: black;
+}
+
+input[type='text']:focus {
+  border-color: lightgray;
+  outline: none;
+}
