@@ -55,4 +55,13 @@
         //chiudere connessione  
         $connessione->close();
     }
+
+    function salva_primo_campo($connessione, $query){
+        if($result = $connessione->query($query)){
+            $row = $result->fetch_assoc();
+            return reset($row); // restituisce il primo campo dell'array associativo
+        }else{
+            return null;
+        }
+    }
 ?>
