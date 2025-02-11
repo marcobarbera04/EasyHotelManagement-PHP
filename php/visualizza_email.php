@@ -15,7 +15,7 @@
             include "funzioni.php";
 
             $id_hotel = $_POST['id_hotel'];
-            $query_nome_hotel = "SELECT nome FROM hotel WHERE id_hotel = 1 LIMIT 1";
+            $query_nome_hotel = "SELECT nome FROM hotel WHERE id_hotel = $id_hotel LIMIT 1";
             $nome_hotel = salva_primo_campo($connessione, $query_nome_hotel);
             echo "<center><H1>Email $nome_hotel<br></center>";
             

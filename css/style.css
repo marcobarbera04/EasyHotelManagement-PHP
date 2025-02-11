@@ -17,6 +17,7 @@ H1 {
   font-family: Arial;
 }
 
+/*Usato per gli a href Indiretro*/
 .Redirect {
   font-family: Arial;
   border-left: 8px solid red;
@@ -26,21 +27,27 @@ H1 {
   padding-right: 1%;
   padding-bottom: .5%;
   padding-left: 1%;
+  cursor: pointer;
 }
 
-/*.Redirect {
-  margin-top: 0.5%;
-  margin-bottom: 0.5%;
-  margin-left: 1%;
+/*Usato per i form Indiretro che dovranno essere uguali agli a href*/
+.Indietro {
   font-family: Arial;
+  border: none;
   border-left: 8px solid red;
-  background-color: aqua;
-  display:inline-block;
-  padding-top: 0.5%;
-  padding-bottom: 0.5%;
+  background-color: lavender;
+  display: inline-block;
+  padding-top: .5%;
   padding-right: 1%;
+  padding-bottom: .5%;
   padding-left: 1%;
-}*/
+  cursor: pointer;
+  color: #591a8b;
+  text-decoration: underline;
+  font-size: 16px;
+}
+
+
 
 table {
   width: 100%;
