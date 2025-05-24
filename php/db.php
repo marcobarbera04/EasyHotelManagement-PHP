@@ -1,6 +1,6 @@
 <?php
     //variabili db
-    $host = "localhost";
+    $host = "mysql_ehm";    // nome del servizio Docker
     $user = "root";
     $password = "";
     $database = "ehm";
