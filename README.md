@@ -7,6 +7,6 @@ docker-compose up -d
 ```
 ## Accedere alle interfacce web
 
-Aprire interfaccia phpmyadmin tramite indirizzo: https//localhost:8081
+Aprire interfaccia phpmyadmin tramite indirizzo: localhost:8081
 
-Aprire interfaccia applicazione web tramite indirizzo: https//localhost:8080
+Aprire interfaccia applicazione web tramite indirizzo: localhost:8080
