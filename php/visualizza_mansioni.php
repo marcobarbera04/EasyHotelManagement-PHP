@@ -16,7 +16,7 @@
 
             echo "<div class = 'contenitore-redirect'><a href= ../index.html class='Redirect'>Indietro</a></div><br>";
 
-            $query = "SELECT mansione FROM mansioni";
+            $query = "SELECT mansione, descrizione FROM mansioni";
             visualizza_tabella($connessione, $query, "modifica_hotel.php");
         ?>
 
