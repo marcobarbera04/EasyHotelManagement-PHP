@@ -39,8 +39,7 @@ H1 {
     justify-content: space-between;
     align-items: center;
     padding: 0 1%;
-    margin-bottom: 10px;
-    gap: 10px;
+    padding-top: 1%;
 }
 
 /* Stile specifico per il pulsante Aggiungi */
@@ -156,3 +155,40 @@ input[type='text']:focus {
     border: 1px solid #ebccd1;
 }
 
+.btn-azione {
+  display: inline-block;
+  width: 300px;
+  padding: 12px 20px;
+  background-color: #56695f;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-azione:hover {
+  background-color: #3c5247;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-azione:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.contenitore-centrale {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 30px auto;
+  gap: 15px;
+}

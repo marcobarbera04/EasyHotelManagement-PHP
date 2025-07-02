@@ -2,12 +2,13 @@
 <html>
     <head>
         <title>Inserisci Ospite</title>
-        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../../css/style.css">
     </head>
     <body>    
         <?php
-            include "db.php";
-            include "funzioni.php";
+            include "../login/db.php";
+            include "../login/funzioni_autorizzazione.php";
+            include "../funzioni.php";
 
             // Inizializza le variabili
             $codice_fiscale = '';
@@ -63,7 +64,7 @@
         <center><h1>Nuovo Ospite</h1></center>
 
         <div class='contenitore-pulsanti'>
-            <a href='visualizza_ospiti.php' class='Redirect'>Indietro</a>
+            <a href='../visualizza/visualizza_ospiti.php' class='Redirect'>Indietro</a>
         </div>
 
         <div class='contenitore-form'>

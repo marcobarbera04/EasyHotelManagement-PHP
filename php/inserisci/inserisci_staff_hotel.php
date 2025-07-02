@@ -2,12 +2,13 @@
 <html>
     <head>
         <title>Assegna Staff all'Hotel</title>
-        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../../css/style.css">
     </head>
     <body>    
         <?php
-            include "db.php";
-            include "funzioni.php";
+            include "../login/db.php";
+            include "../login/funzioni_autorizzazione.php";
+            include "../funzioni.php";
 
             $id_hotel = $_GET['id_hotel'] ?? $_POST['id_hotel'] ?? null;
             
@@ -75,7 +76,7 @@
         <center><h1>Assegna Staff a <?php echo htmlspecialchars($nome_hotel); ?></h1></center>
 
         <div class='contenitore-pulsanti'>
-            <a href='visualizza_staff_hotel.php' class='Redirect' onclick='return goBack()'>Indietro</a>
+            <a href='../visualizza/visualizza_staff_hotel.php?id_hotel=<?php echo $id_hotel; ?>' class='Redirect'>Indietro</a>
         </div>
 
         <div class='contenitore-form'>

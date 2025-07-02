@@ -2,12 +2,13 @@
 <html>
     <head>
         <title>Servizi Offerti</title>
-        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../../css/style.css">
     </head>
     <body>    
         <?php
-            include "db.php";
-            include "funzioni.php";
+            include "../login/db.php";
+            include "../login/funzioni_autorizzazione.php";
+            include "../funzioni.php";
 
             // Ottieni id_hotel da GET o POST
             $id_hotel = $_GET['id_hotel'] ?? $_POST['id_hotel'] ?? null;
@@ -23,11 +24,11 @@
             $stmt->execute();
             $nome_hotel = $stmt->get_result()->fetch_assoc()['nome'] ?? '';
             
-            echo "<center><h1>Servizi Offerti - $nome_hotel</h1></center>";
+            echo "<div class=head><h1>Servizi Offerti - $nome_hotel</h1></div>";
 
             echo "<div class='contenitore-pulsanti'>";
             echo "<a href='visualizza_hotel.php' class='Redirect'>Indietro</a>";
-            echo "<a href='inserisci_servizio_offerto.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Aggiungi Servizio</a>";
+            echo "<a href='../inserisci/inserisci_servizio_offerto.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Aggiungi Servizio</a>";
             echo "</div><br>";
 
             // Query per visualizzare i servizi offerti dall'hotel

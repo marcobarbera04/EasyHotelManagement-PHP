@@ -2,12 +2,13 @@
 <html>
     <head>
         <title>Visualizza prenotazioni</title>
-        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../../css/style.css">
     </head>
     <body>    
         <?php
-            include "db.php";
-            include "funzioni.php";
+            include "../login/db.php";
+            include "../login/funzioni_autorizzazione.php";
+            include "../funzioni.php";
 
             // Ottieni id_hotel da GET o POST
             $id_hotel = $_GET['id_hotel'] ?? $_POST['id_hotel'] ?? null;
@@ -24,14 +25,24 @@
                 die("Hotel non trovato");
             }
             
-            echo "<center><h1>Prenotazioni $nome_hotel</h1></center>";
+            echo '<div class="head">';
+            echo '<h1>Prenotazioni ' . $nome_hotel . '</h1>';
+            echo '</div>';
 
             echo "<div class='contenitore-pulsanti'>";
             echo "<a href='visualizza_hotel.php' class='Redirect'>Indietro</a>";
-            echo "<a href='inserisci_prenotazione.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Aggiungi</a>";
+            echo "<a href='../inserisci/inserisci_prenotazione.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Aggiungi</a>";
             echo "</div><br>";
 
-            $bottoni_aggiuntivi = array();
+            $bottoni_aggiuntivi = array(
+                array(
+                    'name' => 'Visualizza Fattura', 
+                    'file' => 'visualizza_fattura.php', 
+                    'label' => '&#x1F4C5',
+                    'parametro' => 'id_prenotazione' // Specifica quale campo usare come parametro GET
+                )
+            );
+            
             $campi_nascosti = array('id_prenotazione', 'id_hotel');
             $query = "SELECT * FROM prenotazioni WHERE id_hotel = '$id_hotel'";
             visualizza_tabella($connessione, $query, "", $bottoni_aggiuntivi, $campi_nascosti);

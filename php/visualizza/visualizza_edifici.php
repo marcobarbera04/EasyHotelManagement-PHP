@@ -4,24 +4,23 @@
 </style>
     <head>
         <title>Visualizza edifici</title>
-        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../../css/style.css">
     </head>
     <body>    
         <?php
-            //includere script per connettersi al DB
-            include "db.php";
+            include "../login/db.php";
+            include "../login/funzioni_autorizzazione.php";
+            include "../funzioni.php";
 
-            //includere script con le funzioni
-            include "funzioni.php";
-
-            $id_hotel = $_POST['id_hotel'];
+            $id_hotel = $_GET['id_hotel'] ?? $_POST['id_hotel'] ?? null;
             $query_nome_hotel = "SELECT nome FROM hotel WHERE id_hotel = $id_hotel LIMIT 1";
             $nome_hotel = salva_primo_campo($connessione, $query_nome_hotel);
-            echo "<center><H1>Edifici $nome_hotel<br></center>";
+
+            echo "<div class=head><H1>Edifici $nome_hotel<br></div>";
             
             echo "<div class='contenitore-pulsanti'>";
             echo "<a href='visualizza_hotel.php' class='Redirect'>Indietro</a>";
-            echo "<a href='inserisci_email.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Aggiungi</a>";
+            echo "<a href='../inserisci/inserisci_edificio.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Aggiungi</a>";
             echo "</div><br>";
 
             $query = "SELECT id_hotel, id_edificio, nome FROM edifici WHERE id_hotel = $id_hotel";

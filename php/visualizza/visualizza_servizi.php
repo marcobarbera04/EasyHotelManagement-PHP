@@ -4,21 +4,19 @@
 </style>
     <head>
         <title>Visualizza servizi</title>
-        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../../css/style.css">
     </head>
     <body>    
         <?php
-            //includere script per connettersi al DB
-            include "db.php";
+            include "../login/db.php";
+            include "../login/funzioni_autorizzazione.php";
+            include "../funzioni.php";
 
-            //includere script con le funzioni
-            include "funzioni.php";
-
-            echo "<center><H1>Servizi<br></center>";
+            echo "<div class=head><H1>Servizi<br></div>";
 
             echo "<div class='contenitore-pulsanti'>";
-            echo "<a href= ../index.html class='Redirect'>Indietro</a>";
-            pulsante_inserimento("inserisci_servizio.php", "Aggiungi");
+            echo "<a href= ../dashboard.php class='Redirect'>Indietro</a>";
+            pulsante_inserimento("../inserisci/inserisci_servizio.php", "Nuovo Servizio");
             echo "</div><br>";
 
             $bottoni_aggiuntivi = array();

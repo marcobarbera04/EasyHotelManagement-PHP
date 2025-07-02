@@ -2,12 +2,13 @@
 <html>
     <head>
         <title>Aggiungi Camera</title>
-        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../../css/style.css">
     </head>
     <body>    
         <?php
-            include "db.php";
-            include "funzioni.php";
+            include "../login/db.php";
+            include "../login/funzioni_autorizzazione.php";
+            include "../funzioni.php";
 
             $id_edificio = $_GET['id_edificio'] ?? $_POST['id_edificio'] ?? null;
             
@@ -77,7 +78,7 @@
         <center><h1>Aggiungi Camera - <?php echo htmlspecialchars($nome_hotel); ?> (<?php echo htmlspecialchars($nome_edificio); ?>)</h1></center>
 
         <div class='contenitore-pulsanti'>
-            <a href='visualizza_camere.php?id_edificio=<?php echo $id_edificio; ?>&id_hotel=<?php echo $id_hotel; ?>' class='Redirect'>Indietro</a>
+            <a href='../visualizza/visualizza_camere.php?id_edificio=<?php echo $id_edificio; ?>&id_hotel=<?php echo $id_hotel; ?>' class='Redirect'>Indietro</a>
         </div>
 
         <div class='contenitore-form'>

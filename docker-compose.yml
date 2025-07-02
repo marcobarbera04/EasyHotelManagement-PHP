@@ -4,15 +4,15 @@ services:
     container_name: apache_server_ehm
     restart: unless-stopped
     volumes:
-      - ./index.html:/var/www/html/index.html
-      - ./php:/var/www/html/php
-      - ./css:/var/www/html/css
+      - .:/var/www/html
     ports:
       - "8080:80"
     depends_on:
       - mysql_ehm
     command: >
-      bash -c "docker-php-ext-install mysqli && docker-php-ext-enable mysqli && apache2-foreground"
+      bash -c "docker-php-ext-install mysqli && docker-php-ext-enable mysqli && a2enmod rewrite && apache2-foreground"
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html
 
   mysql_ehm:
     image: mysql:latest

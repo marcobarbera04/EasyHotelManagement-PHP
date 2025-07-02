@@ -2,12 +2,13 @@
 <html>
     <head>
         <title>Inserisci Staff</title>
-        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../../css/style.css">
     </head>
     <body>    
         <?php
-            include "db.php";
-            include "funzioni.php";
+            include "../login/db.php";
+            include "../login/funzioni_autorizzazione.php";
+            include "../funzioni.php";
 
             // Inizializza le variabili
             $codice_fiscale = '';
@@ -66,7 +67,7 @@
         <center><h1>Nuovo Membro dello Staff</h1></center>
 
         <div class='contenitore-pulsanti'>
-            <a href='visualizza_staff.php' class='Redirect'>Indietro</a>
+            <a href='../visualizza/visualizza_staff.php' class='Redirect'>Indietro</a>
         </div>
 
         <div class='contenitore-form'>
