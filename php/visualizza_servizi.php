@@ -3,7 +3,7 @@
 <style>
 </style>
     <head>
-        <title>Visualizza staff</title>
+        <title>Visualizza servizi</title>
         <link rel="stylesheet" href="../css/style.css">
     </head>
     <body>    
@@ -14,16 +14,18 @@
             //includere script con le funzioni
             include "funzioni.php";
 
-            $query_nome_hotel = "SELECT * FROM hotel";
-            echo "<center><H1>Staff completo<br></center>";
+            echo "<center><H1>Servizi<br></center>";
 
             echo "<div class='contenitore-pulsanti'>";
             echo "<a href= ../index.html class='Redirect'>Indietro</a>";
-            pulsante_inserimento("inserisci_staff.php", "Aggiungi");
+            pulsante_inserimento("inserisci_servizio.php", "Aggiungi");
             echo "</div><br>";
 
-            $query = "SELECT * FROM staff";
-            visualizza_tabella($connessione, $query, "modifica_staff.php");
+            $bottoni_aggiuntivi = array();
+            $campi_nascosti = array('id_servizio');
+    
+            $query = "SELECT * FROM servizi";
+            visualizza_tabella($connessione, $query, "", $bottoni_aggiuntivi ,$campi_nascosti);
         ?>
 
     </body>

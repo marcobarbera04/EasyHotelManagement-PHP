@@ -3,7 +3,7 @@
 <style>
 </style>
     <head>
-        <title>Visualizza edifici</title>
+        <title>Visualizza staff</title>
         <link rel="stylesheet" href="../css/style.css">
     </head>
     <body>    
@@ -17,18 +17,15 @@
             $id_hotel = $_POST['id_hotel'];
             $query_nome_hotel = "SELECT nome FROM hotel WHERE id_hotel = $id_hotel LIMIT 1";
             $nome_hotel = salva_primo_campo($connessione, $query_nome_hotel);
-            echo "<center><H1>Edifici $nome_hotel<br></center>";
-            
+            echo "<center><H1>Staff $nome_hotel<br></center>";
+
             echo "<div class='contenitore-pulsanti'>";
             echo "<a href='visualizza_hotel.php' class='Redirect'>Indietro</a>";
-            echo "<a href='inserisci_email.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Aggiungi</a>";
+            echo "<a href='inserisci_staff_hotel.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Aggiungi</a>";
             echo "</div><br>";
 
-            $query = "SELECT id_hotel, id_edificio, nome FROM edifici WHERE id_hotel = $id_hotel";
-            $bottoni_aggiuntivi = array(
-                array('name' => 'Visulizza Camere', 'file' => 'visualizza_camere.php', 'label' => '&#128269;')
-            );
-            visualizza_edifici($connessione, $query, "modifica_staff.php", $bottoni_aggiuntivi);
+            $query = "SELECT staff.nome, staff.cognome, staff.eta FROM staff JOIN impieghi_hotel ON impieghi_hotel.codice_fiscale = staff.codice_fiscale WHERE impieghi_hotel.id_hotel = $id_hotel";
+            visualizza_tabella($connessione, $query, "modifica_staff.php");
         ?>
 
     </body>

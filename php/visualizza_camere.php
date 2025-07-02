@@ -14,22 +14,28 @@
         //includere script con le funzioni
         include "funzioni.php";
 
-        $id_edificio = $_POST['id_edificio'];
+        $id_edificio = $_GET['id_edificio'] ?? $_POST['id_edificio'] ?? null;
+        $id_hotel = $_GET['id_hotel'] ?? $_POST['id_hotel'] ?? null;
 
-        $id_hotel = $_POST['id_hotel'];
         $query_nome_edificio = "SELECT nome FROM edifici WHERE id_edificio = $id_edificio LIMIT 1";
         $nome_hotel = salva_primo_campo($connessione, $query_nome_edificio);
         echo "<center><H1>Camere $nome_hotel<br></center>";
 
         //bottone per andare indietro creato con un form e con post perche' dobbiamo mandare alla pagina precedente $id_hotel e a href lo puo fare solo con il get
         echo "<div class = 'contenitore-redirect'>
-                <form action='visualizza_edifici.php' method='post'>
-                    <input type='hidden' name='id_hotel' value='$id_hotel'>
-                    <input type='submit' class='Indietro' value='Indietro'>
-                </form>
+                
               </div><br>";
 
-        $query = "SELECT numero_camera FROM camere WHERE id_edificio = $id_edificio";
+                    
+            echo "<div class='contenitore-pulsanti'>";
+            echo "<form action='visualizza_edifici.php' method='post'>
+                    <input type='hidden' name='id_hotel' value='$id_hotel'>
+                    <input type='submit' class='Indietro' value='Indietro'>
+                </form>";
+            echo "<a href='inserisci_camera.php?id_edificio=$id_edificio' class='Redirect aggiungi'>Aggiungi</a>";
+            echo "</div><br>";
+
+        $query = "SELECT numero_camera, posti_letto, prezzo_notte FROM camere WHERE id_edificio = $id_edificio";
         visualizza_tabella($connessione, $query, "");
         ?>
     </body>

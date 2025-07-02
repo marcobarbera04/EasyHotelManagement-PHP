@@ -1,29 +1,40 @@
 <!DOCTYPE html>
 <html>
-<style>
-</style>
     <head>
         <title>Visualizza prenotazioni</title>
         <link rel="stylesheet" href="../css/style.css">
     </head>
     <body>    
         <?php
-            //includere script per connettersi al DB
             include "db.php";
-
-            //includere script con le funzioni
             include "funzioni.php";
 
-            $id_hotel = $_POST['id_hotel'];
-            $query_nome_hotel = "SELECT nome FROM hotel WHERE id_hotel = $id_hotel LIMIT 1";
+            // Ottieni id_hotel da GET o POST
+            $id_hotel = $_GET['id_hotel'] ?? $_POST['id_hotel'] ?? null;
+            
+            if (!$id_hotel) {
+                die("ID hotel non specificato");
+            }
+
+            // Query corretta per il nome dell'hotel
+            $query_nome_hotel = "SELECT nome FROM hotel WHERE id_hotel = '$id_hotel' LIMIT 1";
             $nome_hotel = salva_primo_campo($connessione, $query_nome_hotel);
-            echo "<center><H1>Prenotazioni $nome_hotel<br></center>";
+            
+            if (!$nome_hotel) {
+                die("Hotel non trovato");
+            }
+            
+            echo "<center><h1>Prenotazioni $nome_hotel</h1></center>";
 
-            echo "<div class = 'contenitore-redirect'><a href= visualizza_hotel.php class='Redirect'>Indietro</a></div><br>";
+            echo "<div class='contenitore-pulsanti'>";
+            echo "<a href='visualizza_hotel.php' class='Redirect'>Indietro</a>";
+            echo "<a href='inserisci_prenotazione.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Aggiungi</a>";
+            echo "</div><br>";
 
-            $query = "SELECT id_prenotazione, check_in, check_out, attiva, numero_camera, codice_fiscale_cliente FROM prenotazioni WHERE id_hotel = $id_hotel";
-            visualizza_tabella($connessione, $query, "");
+            $bottoni_aggiuntivi = array();
+            $campi_nascosti = array('id_prenotazione', 'id_hotel');
+            $query = "SELECT * FROM prenotazioni WHERE id_hotel = '$id_hotel'";
+            visualizza_tabella($connessione, $query, "", $bottoni_aggiuntivi, $campi_nascosti);
         ?>
-
     </body>
 </html>

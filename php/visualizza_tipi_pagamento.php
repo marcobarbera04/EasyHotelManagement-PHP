@@ -16,10 +16,16 @@
 
             echo "<center><H1>Tipi pagamento<br></center>";
 
-            echo "<div class = 'contenitore-redirect'><a href= ../index.html class='Redirect'>Indietro</a></div><br>";
+            echo "<div class='contenitore-pulsanti'>";
+            echo "<a href= ../index.html class='Redirect'>Indietro</a>";
+            pulsante_inserimento("inserisci_tipo_pagamento.php", "Aggiungi");
+            echo "</div><br>";
 
+            $bottoni_aggiuntivi = array();
+            $campi_nascosti = array('id_tipo_pagamento');
+    
             $query = "SELECT * FROM tipi_pagamento";
-            visualizza_tabella($connessione, $query, "modifica_hotel.php");
+            visualizza_tabella($connessione, $query, "", $bottoni_aggiuntivi ,$campi_nascosti);
         ?>
 
     </body>

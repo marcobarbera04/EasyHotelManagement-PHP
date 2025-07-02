@@ -14,7 +14,12 @@
             //includere script con le funzioni
             include "funzioni.php";
 
-            echo "<div class = 'contenitore-redirect'><a href= ../index.html class='Redirect'>Indietro</a></div><br>";
+            echo "<center><H1>Mansioni<br></center>";
+
+            echo "<div class='contenitore-pulsanti'>";
+            echo "<a href= ../index.html class='Redirect'>Indietro</a>";
+            pulsante_inserimento("inserisci_mansione.php", "Aggiungi");
+            echo "</div><br>";
 
             $query = "SELECT mansione, descrizione FROM mansioni";
             visualizza_tabella($connessione, $query, "modifica_hotel.php");

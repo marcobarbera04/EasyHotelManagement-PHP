@@ -16,7 +16,10 @@
 
             echo "<center><H1>Ospiti<br></center>";
 
-            echo "<div class = 'contenitore-redirect'><a href= ../index.html class='Redirect'>Indietro</a></div><br>";
+            echo "<div class='contenitore-pulsanti'>";
+            echo "<a href= ../index.html class='Redirect'>Indietro</a>";
+            pulsante_inserimento("inserisci_ospite.php", "Aggiungi");
+            echo "</div><br>";
 
             $query = "SELECT * FROM ospiti";
             visualizza_tabella($connessione, $query, "modifica_hotel.php");
