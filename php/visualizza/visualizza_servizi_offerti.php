@@ -31,17 +31,19 @@
             echo "<a href='../inserisci/inserisci_servizio_offerto.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Aggiungi Servizio</a>";
             echo "</div><br>";
 
-            // Query per visualizzare i servizi offerti dall'hotel
-            $query = "SELECT s.id_servizio, s.nome_servizio, s.categoria_servizio, s.prezzo 
+            // Query modificata per includere id_servizio_offerto
+            $query = "SELECT so.id_servizio_offerto, s.nome_servizio, s.categoria_servizio, s.prezzo 
                       FROM servizi_offerti so
                       JOIN servizi s ON so.id_servizio = s.id_servizio
                       WHERE so.id_hotel = $id_hotel";
             
             $bottoni_aggiuntivi = array();
             
-            $campi_nascosti = array('id_servizio', 'id_hotel');
+            // Nascondi solo id_servizio_offerto (lo usiamo come PK per l'eliminazione)
+            $campi_nascosti = array('id_servizio_offerto');
             
-            visualizza_tabella($connessione, $query, "", $bottoni_aggiuntivi, $campi_nascosti);
+            // Specifica la tabella servizi_offerti e la PK id_servizio_offerto
+            visualizza_tabella($connessione, $query, "", $bottoni_aggiuntivi, $campi_nascosti, "servizi_offerti", "id_servizio_offerto", array('id_hotel' => $id_hotel));
         ?>
     </body>
 </html>

@@ -58,7 +58,7 @@ else {
             );
             
             $campi_nascosti = array('id_hotel');
-            visualizza_tabella($connessione, $query, "modifica_hotel.php", $bottoni_aggiuntivi, $campi_nascosti);
+            visualizza_tabella($connessione, $query, "../modifica/modifica_hotel.php", $bottoni_aggiuntivi, $campi_nascosti);
         ?>
     </body>
 </html>

@@ -40,6 +40,18 @@
                     'file' => 'visualizza_fattura.php', 
                     'label' => '&#x1F9FE',
                     'parametro' => 'id_prenotazione' // Specifica quale campo usare come parametro GET
+                ),
+                array(
+                    'name' => 'Visualizza ospiti',
+                    'file' => 'visualizza_ospiti_prenotazione.php',
+                    'label' => '&#x1F465',
+                    'parametro' => 'id_prenotazione'
+                ),
+                array(
+                    'name' => 'Visualizza Servizi', 
+                    'file' => 'visualizza_servizi_prenotazione.php', 
+                    'label' => '&#128718',
+                    'parametro' => 'id_prenotazione' // Specifica quale campo usare come parametro GET
                 )
             );
             

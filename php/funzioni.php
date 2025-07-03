@@ -1,12 +1,37 @@
 <?php 
-function visualizza_tabella($connessione, $query, $modifica_file, $bottoni_aggiuntivi = array(), $campi_nascosti = array()) {
+function visualizza_tabella($connessione, $query, $modifica_file, $bottoni_aggiuntivi = array(), $campi_nascosti = array(), $tabella = null, $pk_field = 'id', $parametri_extra = array()) {
+    // Gestione eliminazione
+    if ($tabella !== null && isset($_POST['elimina'])) {
+        $id = $_POST[$pk_field];
+        $sql = "DELETE FROM $tabella WHERE $pk_field = ?";
+        $stmt = $connessione->prepare($sql);
+        
+        // Determina il tipo di parametro (i per intero, s per stringa)
+        $tipo_parametro = is_numeric($id) ? 'i' : 's';
+        $stmt->bind_param($tipo_parametro, $id);
+        
+        if ($stmt->execute()) {
+            echo "<div class='successo'>Record eliminato con successo</div>";
+            
+            // Ricarica la pagina mantenendo i parametri
+            $parametri_da_mantenere = array_merge($_GET, $parametri_extra);
+            $query_string = http_build_query($parametri_da_mantenere);
+            echo "<script>window.location.href = window.location.pathname + '?$query_string';</script>";
+            exit();
+        } else {
+            echo "<div class='errore'>Errore durante l'eliminazione: " . $connessione->error . "</div>";
+        }
+        $stmt->close();
+    }
+
+    // Visualizzazione tabella
     $sql = "$query";
 
     if ($result = $connessione->query($sql)) {
         echo "<div class='contenitore-tabella'>";
         echo "<table><thead><tr>";
 
-        // Intestazioni delle tabelle (escludi i campi nascosti)
+        // Intestazioni delle colonne
         $fields = $result->fetch_fields();
         foreach($fields as $field) {
             if(!in_array($field->name, $campi_nascosti)) {
@@ -14,19 +39,26 @@ function visualizza_tabella($connessione, $query, $modifica_file, $bottoni_aggiu
             }
         }
 
-        // Aggiungi intestazioni per i pulsanti aggiuntivi
+        // Pulsanti aggiuntivi
         foreach ($bottoni_aggiuntivi as $button) {
             echo "<th>$button[name]</th>";
         }
 
-        echo "<th>Modifica</th>";
+        // Mostra "Modifica" solo se specificato il file
+        if (!empty($modifica_file)) {
+            echo "<th>Modifica</th>";
+        }
+        
+        if ($tabella !== null) {
+            echo "<th>Elimina</th>";
+        }
         echo "</tr></thead><tbody>";
 
-        // Dati della tabella
+        // Righe della tabella
         while($row = $result->fetch_assoc()) {
             echo "<tr>";
             
-            // Mostra solo i campi non nascosti
+            // Valori delle celle
             foreach($row as $key => $value) {
                 if(!in_array($key, $campi_nascosti)) {
                     echo "<td>$value</td>";
@@ -35,27 +67,54 @@ function visualizza_tabella($connessione, $query, $modifica_file, $bottoni_aggiu
 
             // Pulsanti aggiuntivi
             foreach ($bottoni_aggiuntivi as $button) {
-                // Se è specificato un parametro, usalo per creare un link GET
                 if (isset($button['parametro'])) {
                     $param_value = $row[$button['parametro']];
-                    echo "<td><a href='{$button['file']}?{$button['parametro']}=$param_value' class='bottone-azione'>{$button['label']}</a></td>";
-                } 
-                // Altrimenti usa il metodo POST con tutti i campi
-                else {
+                    $query_params = [$button['parametro'] => $param_value];
+                    
+                    // Aggiungi parametri extra se specificati
+                    if (!empty($parametri_extra)) {
+                        $query_params = array_merge($query_params, $parametri_extra);
+                    }
+                    
+                    $query_string = http_build_query($query_params);
+                    echo "<td><a href='{$button['file']}?$query_string' class='bottone-azione'>{$button['label']}</a></td>";
+                } else {
                     echo "<td><form action='{$button['file']}' method='post'>";
                     foreach ($row as $key => $value) {
+                        echo "<input type='hidden' name='$key' value='$value'>";
+                    }
+                    // Aggiungi parametri extra
+                    foreach ($parametri_extra as $key => $value) {
                         echo "<input type='hidden' name='$key' value='$value'>";
                     }
                     echo "<input type='submit' style='border: none; background: none; cursor: pointer;' value='{$button['label']}'></form></td>";
                 }
             }
 
-            // Bottone modifica (includi TUTTI i campi nei hidden)
-            echo "<td><form action='$modifica_file' method='post'>";
-            foreach($row as $key => $value) {
-                echo "<input type='hidden' name='$key' value='$value'>";
+            // Bottone modifica (solo se specificato il file)
+            if (!empty($modifica_file)) {
+                echo "<td><form action='$modifica_file' method='post'>";
+                foreach($row as $key => $value) {
+                    echo "<input type='hidden' name='$key' value='$value'>";
+                }
+                // Aggiungi parametri extra
+                foreach ($parametri_extra as $key => $value) {
+                    echo "<input type='hidden' name='$key' value='$value'>";
+                }
+                echo "<input type='submit' value='Modifica'></form></td>";
             }
-            echo "<input type='submit' value='Modifica'></form></td>";
+
+            // Bottone elimina
+            if ($tabella !== null) {
+                echo "<td><form method='post' onsubmit='return confirm(\"Sei sicuro di voler eliminare questo record?\")'>";
+                echo "<input type='hidden' name='elimina' value='1'>";
+                echo "<input type='hidden' name='$pk_field' value='{$row[$pk_field]}'>";
+                // Aggiungi parametri extra
+                foreach ($parametri_extra as $key => $value) {
+                    echo "<input type='hidden' name='$key' value='$value'>";
+                }
+                echo "<input type='submit' value='Elimina' style='background-color: #ff4444; color: white;'></form></td>";
+            }
 
             echo "</tr>";
         }
@@ -66,70 +125,6 @@ function visualizza_tabella($connessione, $query, $modifica_file, $bottoni_aggiu
     }
 
     $connessione->close();
-}
-
-function visualizza_edifici($connessione, $query, $modifica_file, $bottoni_aggiuntivi = array(), $campi_nascosti = array('id_edificio', 'id_hotel')) {
-$sql = "$query";
-
-if ($result = $connessione->query($sql)) {
-    echo "<div class='contenitore-tabella'>";
-    echo "<table><thead><tr>";
-
-    // Intestazioni delle tabelle (escludi i campi nascosti)
-    $fields = $result->fetch_fields();
-    foreach($fields as $field) {
-        if(!in_array($field->name, $campi_nascosti)) {
-            echo "<th>$field->name</th>";
-        }
-    }
-
-    // Aggiungi intestazioni per i pulsanti aggiuntivi
-    foreach ($bottoni_aggiuntivi as $button) {
-        echo "<th>$button[name]</th>";
-    }
-
-    echo "<th>Modifica</th>";
-    echo "</tr></thead><tbody>";
-
-    // Dati della tabella
-    while($row = $result->fetch_assoc()) {
-        echo "<tr>";
-        
-        // Mostra solo i campi non nascosti
-        foreach($row as $key => $value) {
-            if(!in_array($key, $campi_nascosti)) {
-                echo "<td>$value</td>";
-            }
-        }
-
-        // Pulsanti aggiuntivi (includi TUTTI i campi nei hidden)
-        foreach ($bottoni_aggiuntivi as $button) {
-            echo "<td><form action='{$button['file']}' method='post'>";
-            foreach ($row as $key => $value) {
-                echo "<input type='hidden' name='$key' value='$value'>";
-            }
-            // Questi due hidden sono ridondanti (già inclusi nel foreach sopra)
-            // echo "<input type='hidden' name='id_edificio' value='{$row['id_edificio']}'>";
-            // echo "<input type='hidden' name='id_hotel' value='{$row['id_hotel']}'>";
-            echo "<input type='submit' style='border: none; background: none; cursor: pointer;' value='{$button['label']}'></form></td>";
-        }
-
-        // Bottone modifica (includi TUTTI i campi nei hidden)
-        echo "<td><form action='$modifica_file' method='post'>";
-        foreach($row as $key => $value) {
-            echo "<input type='hidden' name='$key' value='$value'>";
-        }
-        echo "<input type='submit' value='Modifica'></form></td>";
-
-        echo "</tr>";
-    }
-    echo "</tbody></table>";
-    echo "</div>";
-} else {
-    echo "Errore nella query: " . $connessione->error;
-}
-
-$connessione->close();
 }
 
 function salva_primo_campo($connessione, $query){

@@ -35,7 +35,7 @@
             $query = "SELECT email, descrizione FROM email WHERE id_hotel = $id_hotel";
             $bottoni_aggiuntivi = array();
             $campi_nascosti = array();
-            visualizza_tabella($connessione, $query, "", $bottoni_aggiuntivi, $campi_nascosti);
+            visualizza_tabella($connessione, $query, "", $bottoni_aggiuntivi, $campi_nascosti, "email", "email", array('id_hotel' => $id_hotel));
         ?>
     </body>
 </html>

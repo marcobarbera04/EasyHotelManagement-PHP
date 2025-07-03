@@ -29,7 +29,7 @@
         echo "</div><br>";
 
         $query = "SELECT numero_camera, posti_letto, prezzo_notte FROM camere WHERE id_edificio = $id_edificio";
-        visualizza_tabella($connessione, $query, "");
+        visualizza_tabella($connessione, $query, "../modifica/modifica_camera.php");
         ?>
     </body>
 </html>

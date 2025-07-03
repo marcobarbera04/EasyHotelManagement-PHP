@@ -25,10 +25,10 @@
 
             $query = "SELECT id_hotel, id_edificio, nome FROM edifici WHERE id_hotel = $id_hotel";
             $bottoni_aggiuntivi = array(
-                array('name' => 'Visulizza Camere', 'file' => 'visualizza_camere.php', 'label' => '&#128269;')
+                array('name' => 'Visulizza Camere', 'file' => 'visualizza_camere.php', 'label' => '&#128716;')
             );
-            visualizza_edifici($connessione, $query, "modifica_staff.php", $bottoni_aggiuntivi);
+            $campi_nascosti = array('id_edificio', 'id_hotel');
+            visualizza_tabella($connessione, $query, "", $bottoni_aggiuntivi, $campi_nascosti);
         ?>
-
     </body>
 </html>

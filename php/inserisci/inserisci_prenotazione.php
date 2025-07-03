@@ -47,7 +47,7 @@
             $query_ospiti = "SELECT codice_fiscale, nome, cognome FROM ospiti ORDER BY cognome, nome";
             $result_ospiti = $connessione->query($query_ospiti);
             
-            // Query corretta per le camere con join tra camere e edifici
+            // Query per le camere
             $query_camere = "SELECT c.numero_camera, c.prezzo_notte 
                             FROM camere c
                             JOIN edifici e ON c.id_edificio = e.id_edificio
@@ -152,6 +152,30 @@
                         $id_prenotazione = $connessione->insert_id;
                         $stmt_prenotazione->close();
                         
+                        // INSERIMENTO DI TUTTI GLI OSPITI (CLIENTE PRINCIPALE + AGGIUNTIVI)
+                        $query_associazione = "INSERT INTO ospiti_prenotazione (id_prenotazione, codice_fiscale) VALUES (?, ?)";
+                        $stmt_associazione = $connessione->prepare($query_associazione);
+                        
+                        // 1. Inseriamo prima il cliente principale
+                        $stmt_associazione->bind_param("is", $id_prenotazione, $_POST['codice_fiscale_cliente']);
+                        if (!$stmt_associazione->execute()) {
+                            throw new Exception("Errore nell'associazione del cliente principale: " . $stmt_associazione->error);
+                        }
+                        
+                        // 2. Poi inseriamo gli ospiti aggiuntivi (se presenti)
+                        if (!empty($_POST['ospiti_aggiuntivi'])) {
+                            foreach ($_POST['ospiti_aggiuntivi'] as $codice_fiscale) {
+                                // Evitiamo di inserire duplicati (nel caso il cliente principale fosse anche selezionato come ospite aggiuntivo)
+                                if ($codice_fiscale != $_POST['codice_fiscale_cliente']) {
+                                    $stmt_associazione->bind_param("is", $id_prenotazione, $codice_fiscale);
+                                    if (!$stmt_associazione->execute()) {
+                                        throw new Exception("Errore nell'associazione dell'ospite aggiuntivo: " . $stmt_associazione->error);
+                                    }
+                                }
+                            }
+                        }
+                        $stmt_associazione->close();
+                        
                         // Calcola il numero di notti
                         $check_in = new DateTime($dati_prenotazione['check_in']);
                         $check_out = new DateTime($dati_prenotazione['check_out']);
@@ -185,7 +209,6 @@
                         } elseif ($_POST['id_tipo_pagamento'] == 2) { // Bonifico
                             $dati_fattura['numero_conto_corrente'] = $_POST['numero_conto_corrente'];
                         }
-                        // Per i contanti non servono campi aggiuntivi
                         
                         // Inserimento fattura
                         $campi_fattura = [];
@@ -198,7 +221,6 @@
                             $valori_fattura[] = '?';
                             $parametri_fattura[] = $valore;
                             
-                            // Determina il tipo di parametro
                             if (is_int($valore)) {
                                 $tipi_fattura .= 'i';
                             } elseif (is_float($valore)) {
@@ -227,7 +249,21 @@
                         // Se tutto è andato bene, conferma la transazione
                         $connessione->commit();
                         
-                        echo "<div class='messaggio successo'>Prenotazione e fattura aggiunte con successo! Importo totale: €" . number_format($importo_totale, 2) . "</div>";
+                        // Messaggio di successo migliorato
+                        $messaggio_successo = "Prenotazione creata con successo!<br>";
+                        $messaggio_successo .= "ID Prenotazione: $id_prenotazione<br>";
+                        $messaggio_successo .= "Cliente principale: " . htmlspecialchars($_POST['codice_fiscale_cliente']) . "<br>";
+                        
+                        // Contiamo gli ospiti totali (cliente principale + aggiuntivi)
+                        $totale_ospiti = 1; // Il cliente principale
+                        if (!empty($_POST['ospiti_aggiuntivi'])) {
+                            $totale_ospiti += count($_POST['ospiti_aggiuntivi']);
+                        }
+                        $messaggio_successo .= "Ospiti totali associati: $totale_ospiti<br>";
+                        $messaggio_successo .= "Importo totale: €" . number_format($importo_totale, 2);
+                        
+                        echo "<div class='messaggio successo'>$messaggio_successo</div>";
+                        
                         // Resetta i campi
                         $_POST = [];
                         
@@ -270,7 +306,9 @@
                     <label for='numero_camera'>Camera:</label>
                     <select id='numero_camera' name='numero_camera' required>
                         <option value=''>Seleziona camera</option>
-                        <?php while($camera = $result_camere->fetch_assoc()): ?>
+                        <?php 
+                        $result_camere->data_seek(0); // Resetta il puntatore del risultato
+                        while($camera = $result_camere->fetch_assoc()): ?>
                             <option value='<?php echo $camera['numero_camera']; ?>'
                                 <?php echo (isset($_POST['numero_camera']) && $_POST['numero_camera'] == $camera['numero_camera']) ? 'selected' : ''; ?>>
                                 <?php echo $camera['numero_camera']; ?> (€<?php echo $camera['prezzo_notte']; ?>/notte)
@@ -280,23 +318,42 @@
                 </div>
                 
                 <div class='form-group'>
-                    <label for='codice_fiscale_cliente'>Ospite:</label>
-                    <select id='codice_fiscale_cliente' name='codice_fiscale_cliente' required>
-                        <option value=''>Seleziona ospite</option>
-                        <?php while($ospite = $result_ospiti->fetch_assoc()): ?>
+                    <label for='codice_fiscale_cliente'>Cliente principale:</label>
+                    <input list='lista_ospiti' id='codice_fiscale_cliente' name='codice_fiscale_cliente' 
+                        placeholder="Cerca per nome, cognome o CF..." required>
+                    <datalist id='lista_ospiti'>
+                        <?php 
+                        $result_ospiti->data_seek(0);
+                        while($ospite = $result_ospiti->fetch_assoc()): ?>
+                            <option value='<?php echo $ospite['codice_fiscale']; ?>'>
+                                <?php echo $ospite['cognome'] . ' ' . $ospite['nome'] . ' (' . $ospite['codice_fiscale'] . ')'; ?>
+                            </option>
+                        <?php endwhile; ?>
+                    </datalist>
+                </div>
+                
+                <div class='form-group'>
+                    <label for='ospiti_aggiuntivi'>Ospiti aggiuntivi:</label>
+                    <select id='ospiti_aggiuntivi' name='ospiti_aggiuntivi[]' multiple size="4">
+                        <?php 
+                        $result_ospiti->data_seek(0); // Resetta il puntatore del risultato
+                        while($ospite = $result_ospiti->fetch_assoc()): ?>
                             <option value='<?php echo $ospite['codice_fiscale']; ?>'
-                                <?php echo (isset($_POST['codice_fiscale_cliente']) && $_POST['codice_fiscale_cliente'] == $ospite['codice_fiscale']) ? 'selected' : ''; ?>>
+                                <?php echo (isset($_POST['ospiti_aggiuntivi']) && in_array($ospite['codice_fiscale'], $_POST['ospiti_aggiuntivi'])) ? 'selected' : ''; ?>>
                                 <?php echo $ospite['cognome'] . ' ' . $ospite['nome'] . ' (' . $ospite['codice_fiscale'] . ')'; ?>
                             </option>
                         <?php endwhile; ?>
                     </select>
+                    <small>Tenere premuto Ctrl per selezionare più ospiti</small>
                 </div>
                 
                 <div class='form-group'>
                     <label for='id_tipo_pagamento'>Metodo di pagamento:</label>
                     <select id='id_tipo_pagamento' name='id_tipo_pagamento' required onchange="mostraCampiPagamento()">
                         <option value=''>Seleziona metodo di pagamento</option>
-                        <?php while($tipo = $result_tipi_pagamento->fetch_assoc()): ?>
+                        <?php 
+                        $result_tipi_pagamento->data_seek(0); // Resetta il puntatore del risultato
+                        while($tipo = $result_tipi_pagamento->fetch_assoc()): ?>
                             <option value='<?php echo $tipo['id_tipo_pagamento']; ?>'
                                 <?php echo (isset($_POST['id_tipo_pagamento']) && $_POST['id_tipo_pagamento'] == $tipo['id_tipo_pagamento']) ? 'selected' : ''; ?>>
                                 <?php echo $tipo['metodo_pagamento']; ?>
@@ -344,6 +401,5 @@
                 </div>
             </form>
         </div>
-
     </body>
 </html>

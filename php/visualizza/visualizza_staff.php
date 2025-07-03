@@ -22,7 +22,15 @@
             echo "</div><br>";
 
             $query = "SELECT * FROM staff";
-            visualizza_tabella($connessione, $query, "modifica_staff.php");
+            $bottoni_aggiuntivi = array(
+                array(
+                    'name' => 'Visualizza Mansioni', 
+                    'file' => 'visualizza_mansioni_staff.php', 
+                    'label' => '&#x1F4BC',
+                    'parametro' => 'codice_fiscale'  // Specifica quale campo passare come parametro
+                )
+            );
+            visualizza_tabella($connessione, $query, "modifica_staff.php", $bottoni_aggiuntivi);
         ?>
 
     </body>

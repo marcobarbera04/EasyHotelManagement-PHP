@@ -25,14 +25,22 @@
 
             // Inizializza array errori
             $errori = [];
+            $mansione_selezionata = $_POST['mansione'] ?? null;
+
+            // Carica tutte le mansioni disponibili
+            $query_mansioni = "SELECT DISTINCT m.mansione, m.descrizione 
+                              FROM mansioni m
+                              JOIN mansioni_staff ms ON m.mansione = ms.mansione
+                              ORDER BY m.mansione";
+            $result_mansioni = $connessione->query($query_mansioni);
 
             // Gestione dell'invio del form
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['codice_fiscale'])) {
                 $codice_fiscale = trim($_POST['codice_fiscale']);
                 
                 // Verifica se lo staff è già assegnato a questo hotel
                 $query_verifica = "SELECT codice_fiscale FROM impieghi_hotel 
-                                   WHERE codice_fiscale = ? AND id_hotel = ?";
+                                 WHERE codice_fiscale = ? AND id_hotel = ?";
                 $stmt = $connessione->prepare($query_verifica);
                 $stmt->bind_param("si", $codice_fiscale, $id_hotel);
                 $stmt->execute();
@@ -60,17 +68,6 @@
                     }
                 }
             }
-
-            // Query per ottenere tutti i membri dello staff non ancora assegnati a questo hotel
-            $query_staff = "SELECT s.codice_fiscale, s.nome, s.cognome 
-                           FROM staff s
-                           WHERE s.codice_fiscale NOT IN (
-                               SELECT codice_fiscale FROM impieghi_hotel WHERE id_hotel = ?
-                           )";
-            $stmt = $connessione->prepare($query_staff);
-            $stmt->bind_param("i", $id_hotel);
-            $stmt->execute();
-            $staff_disponibile = $stmt->get_result();
         ?>
 
         <center><h1>Assegna Staff a <?php echo htmlspecialchars($nome_hotel); ?></h1></center>
@@ -84,22 +81,50 @@
                 <input type='hidden' name='id_hotel' value='<?php echo $id_hotel; ?>'>
                 
                 <div class='form-group'>
-                    <label for='codice_fiscale'>Seleziona Membro dello Staff:</label>
-                    <select id='codice_fiscale' name='codice_fiscale' required>
-                        <option value=''>Seleziona membro staff</option>
-                        <?php
-                        if ($staff_disponibile->num_rows > 0) {
-                            while($row = $staff_disponibile->fetch_assoc()) {
-                                echo "<option value='".htmlspecialchars($row['codice_fiscale'])."'>";
-                                echo htmlspecialchars($row['cognome'])." ".htmlspecialchars($row['nome']);
-                                echo "</option>";
-                            }
-                        } else {
-                            echo "<option value='' disabled>Nessun membro dello staff disponibile</option>";
-                        }
-                        ?>
+                    <label for='mansione'>Seleziona Mansione:</label>
+                    <select id='mansione' name='mansione' required onchange="this.form.submit()">
+                        <option value=''>Seleziona una mansione</option>
+                        <?php while($mansione = $result_mansioni->fetch_assoc()): ?>
+                            <option value='<?php echo $mansione['mansione']; ?>'
+                                <?php echo ($mansione_selezionata == $mansione['mansione']) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($mansione['mansione']); ?>
+                            </option>
+                        <?php endwhile; ?>
                     </select>
                 </div>
+                
+                <?php if ($mansione_selezionata): ?>
+                    <?php
+                    // Query per ottenere i membri dello staff con la mansione selezionata e non ancora assegnati a questo hotel
+                    $query_staff = "SELECT s.codice_fiscale, s.nome, s.cognome 
+                                  FROM staff s
+                                  JOIN mansioni_staff ms ON s.codice_fiscale = ms.codice_fiscale
+                                  WHERE ms.mansione = ? 
+                                  AND s.codice_fiscale NOT IN (
+                                      SELECT codice_fiscale FROM impieghi_hotel WHERE id_hotel = ?
+                                  )";
+                    $stmt = $connessione->prepare($query_staff);
+                    $stmt->bind_param("si", $mansione_selezionata, $id_hotel);
+                    $stmt->execute();
+                    $staff_disponibile = $stmt->get_result();
+                    ?>
+                    
+                    <div class='form-group'>
+                        <label for='codice_fiscale'>Seleziona Membro dello Staff:</label>
+                        <select id='codice_fiscale' name='codice_fiscale' required>
+                            <option value=''>Seleziona staff</option>
+                            <?php while($row = $staff_disponibile->fetch_assoc()): ?>
+                                <option value='<?php echo htmlspecialchars($row['codice_fiscale']); ?>'>
+                                    <?php echo htmlspecialchars($row['cognome'] . " " . $row['nome'] . " (" . $row['codice_fiscale'] . ")"); ?>
+                                </option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                    
+                    <div class='form-group'>
+                        <input type='submit' value='Assegna Staff' class='pulsante-invio'>
+                    </div>
+                <?php endif; ?>
                 
                 <?php 
                 if (!empty($errori)) {
@@ -108,31 +133,7 @@
                     }
                 }
                 ?>
-                
-                <div class='form-group'>
-                    <input type='submit' value='Assegna Staff' class='pulsante-invio'>
-                </div>
             </form>
         </div>
-
-        <script>
-            function goBack() {
-                // Creiamo un form temporaneo per inviare l'id_hotel via POST
-                const form = document.createElement('form');
-                form.method = 'post';
-                form.action = 'visualizza_staff_hotel.php';
-                
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'id_hotel';
-                input.value = '<?php echo $id_hotel; ?>';
-                
-                form.appendChild(input);
-                document.body.appendChild(form);
-                form.submit();
-                
-                return false; // Previene il comportamento normale del link
-            }
-        </script>
     </body>
 </html>
