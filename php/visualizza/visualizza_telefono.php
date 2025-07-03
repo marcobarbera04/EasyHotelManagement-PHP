@@ -35,7 +35,7 @@
             $query = "SELECT numero, descrizione FROM telefono WHERE id_hotel = $id_hotel";
             $bottoni_aggiuntivi = array();
             $campi_nascosti = array();
-            visualizza_tabella($connessione, $query, "modifica_telefono.php", $bottoni_aggiuntivi, $campi_nascosti);
+            visualizza_tabella($connessione, $query, "", $bottoni_aggiuntivi, $campi_nascosti, "telefono", "numero", array('id_hotel' => $id_hotel));
         ?>
     </body>
 </html>
