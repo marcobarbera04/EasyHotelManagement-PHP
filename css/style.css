@@ -192,3 +192,39 @@ input[type='text']:focus {
   margin: 30px auto;
   gap: 15px;
 }
+
+.fattura-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: white;
+}
+.intestazione-fattura {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+.dettagli-fattura {
+    margin-bottom: 30px;
+}
+.riga-fattura {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.totale-fattura {
+    font-weight: bold;
+    font-size: 1.2em;
+    border-top: 2px solid #000;
+    padding-top: 10px;
+    margin-top: 20px;
+}
+.metodo-pagamento {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}

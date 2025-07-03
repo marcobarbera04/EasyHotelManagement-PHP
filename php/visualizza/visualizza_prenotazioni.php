@@ -38,7 +38,7 @@
                 array(
                     'name' => 'Visualizza Fattura', 
                     'file' => 'visualizza_fattura.php', 
-                    'label' => '&#x1F4C5',
+                    'label' => '&#x1F9FE',
                     'parametro' => 'id_prenotazione' // Specifica quale campo usare come parametro GET
                 )
             );

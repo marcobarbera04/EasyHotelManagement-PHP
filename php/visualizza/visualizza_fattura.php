@@ -48,46 +48,7 @@
             $check_in = new DateTime($fattura['check_in']);
             $check_out = new DateTime($fattura['check_out']);
             $notti = $check_in->diff($check_out)->days;
-            
-            // Stile per la fattura
-            echo "<style>
-                .fattura-container {
-                    max-width: 800px;
-                    margin: 20px auto;
-                    padding: 20px;
-                    border: 1px solid #ddd;
-                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-                    background-color: white;
-                }
-                .intestazione-fattura {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 30px;
-                    border-bottom: 1px solid #eee;
-                    padding-bottom: 20px;
-                }
-                .dettagli-fattura {
-                    margin-bottom: 30px;
-                }
-                .riga-fattura {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 10px;
-                }
-                .totale-fattura {
-                    font-weight: bold;
-                    font-size: 1.2em;
-                    border-top: 2px solid #000;
-                    padding-top: 10px;
-                    margin-top: 20px;
-                }
-                .metodo-pagamento {
-                    margin-top: 30px;
-                    padding-top: 20px;
-                    border-top: 1px solid #eee;
-                }
-            </style>";
-            
+                        
             // Pulsante per tornare indietro
             echo "<div class='contenitore-pulsanti'>";
             echo "<a href='visualizza_prenotazioni.php?id_hotel=" . $fattura['id_hotel'] . "' class='Redirect'>Torna alle prenotazioni</a>";
