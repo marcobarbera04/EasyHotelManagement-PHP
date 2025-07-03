@@ -20,7 +20,7 @@
             echo "</div><br>";
 
             $query = "SELECT * FROM ospiti";
-            visualizza_tabella($connessione, $query, "modifica_hotel.php");
+            visualizza_tabella($connessione, $query, "");
         ?>
 
     </body>

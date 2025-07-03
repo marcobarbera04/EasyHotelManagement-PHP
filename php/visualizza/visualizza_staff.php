@@ -30,7 +30,7 @@
                     'parametro' => 'codice_fiscale'  // Specifica quale campo passare come parametro
                 )
             );
-            visualizza_tabella($connessione, $query, "modifica_staff.php", $bottoni_aggiuntivi);
+            visualizza_tabella($connessione, $query, "", $bottoni_aggiuntivi);
         ?>
 
     </body>
