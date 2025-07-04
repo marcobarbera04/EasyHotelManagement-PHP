@@ -33,7 +33,7 @@ verifica_autorizzazione();
 
             echo "<div class='contenitore-pulsanti'>";
             echo "<a href='visualizza_hotel.php' class='Redirect'>Indietro</a>";
-            echo "<a href='../inserisci/inserisci_prenotazione.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Aggiungi</a>";
+            echo "<a href='../inserisci/inserisci_prenotazione.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Aggiungi Prenotazione</a>";
             echo "</div><br>";
 
             $bottoni_aggiuntivi = array(
@@ -59,7 +59,7 @@ verifica_autorizzazione();
             
             $campi_nascosti = array('id_prenotazione', 'id_hotel');
             $query = "SELECT * FROM prenotazioni WHERE id_hotel = '$id_hotel'";
-            visualizza_tabella($connessione, $query, "", $bottoni_aggiuntivi, $campi_nascosti);
+            visualizza_tabella($connessione, $query, "../modifica/modifica_prenotazione.php", $bottoni_aggiuntivi, $campi_nascosti);
         ?>
     </body>
 </html>

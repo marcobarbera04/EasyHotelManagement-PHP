@@ -32,7 +32,7 @@ if ($_SESSION['id_ruolo'] != 1) {
 
             echo "<div class='contenitore-pulsanti'>";
             echo "<a href=../dashboard.php class='Redirect'>Indietro</a>";
-            pulsante_inserimento("../inserisci/inserisci_account.php", "Aggiungi account");
+            pulsante_inserimento("../inserisci/inserisci_account.php", "Crea account");
             echo "</div><br>";
 
             $query = "SELECT a.id_account, a.codice_fiscale, a.email, r.nome_ruolo as ruolo 

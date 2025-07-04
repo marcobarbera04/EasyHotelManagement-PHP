@@ -47,7 +47,7 @@ verifica_autorizzazione();
 
             echo "<div class='contenitore-pulsanti'>";
             echo "<a href='../visualizza/visualizza_prenotazioni.php?id_hotel=" . $id_hotel . "' class='Redirect'>Indietro</a>";
-            echo "<a href='../inserisci/inserisci_servizio_prenotazione.php?id_prenotazione=".$id_prenotazione."' class='Redirect aggiungi'>Aggiungi Servizio</a>";
+            echo "<a href='../inserisci/inserisci_servizio_prenotazione.php?id_prenotazione=".$id_prenotazione."' class='Redirect aggiungi'>Richiedi Servizio</a>";
             echo "</div><br>";
 
             // Query per i servizi (senza parametri per la visualizzazione tabella)
@@ -57,23 +57,6 @@ verifica_autorizzazione();
                              JOIN servizi s ON sp.id_servizio = s.id_servizio
                              WHERE sp.id_prenotazione = $id_prenotazione";
             
-            // Bottoni aggiuntivi per eliminazione
-            $bottoni_aggiuntivi = array(
-                array(
-                    'name' => 'Elimina',
-                    'file' => '../elimina/elimina_servizio_prenotazione.php',
-                    'label' => 'Elimina',
-                    'class' => 'pulsante-elimina',
-                    'parametri_extra' => array(
-                        'id_prenotazione' => $id_prenotazione,
-                        'id_hotel' => $id_hotel
-                    )
-                )
-            );
-            
-            // Campi da nascondere
-            $campi_nascosti = array('id_servizio_prenotazione', 'id_servizio');
-            
             // Calcola il totale
             $query_totale = "SELECT SUM(s.prezzo) as totale
                             FROM servizi_prenotazioni sp
@@ -81,20 +64,12 @@ verifica_autorizzazione();
                             WHERE sp.id_prenotazione = $id_prenotazione";
             $totale = $connessione->query($query_totale)->fetch_assoc()['totale'];
             
+            // Campi da nascondere
+            $campi_nascosti = array('id_servizio_prenotazione', 'id_servizio');
+            $bottoni_aggiuntivi = array();
+
             // Visualizza la tabella usando la funzione (con query senza parametri)
-            visualizza_tabella(
-                $connessione, 
-                $query_servizi, 
-                "", // Nessuna modifica diretta
-                $bottoni_aggiuntivi,
-                $campi_nascosti,
-                "servizi_prenotazioni", // Tabella per eliminazione
-                "id_servizio_prenotazione", // Campo chiave primaria
-                array(
-                    'id_prenotazione' => $id_prenotazione,
-                    'id_hotel' => $id_hotel
-                ) // Parametri extra
-            );
+            visualizza_tabella($connessione, $query_servizi, "", $bottoni_aggiuntivi, $campi_nascosti, "servizi_prenotazioni", "id_servizio_prenotazione", array('id_prenotazione' => $id_prenotazione, 'id_hotel' => $id_hotel));
             
             // Mostra il totale
             echo "<div class='totale-servizi'>";

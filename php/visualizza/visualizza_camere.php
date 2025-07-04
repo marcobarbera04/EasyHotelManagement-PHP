@@ -27,11 +27,11 @@ verifica_autorizzazione();
                     <input type='hidden' name='id_hotel' value='$id_hotel'>
                     <input type='submit' class='Indietro' value='Indietro'>
                 </form>";
-        echo "<a href='../inserisci/inserisci_camera.php?id_edificio=$id_edificio' class='Redirect aggiungi'>Aggiungi</a>";
+        echo "<a href='../inserisci/inserisci_camera.php?id_edificio=$id_edificio' class='Redirect aggiungi'>Nuova Camera</a>";
         echo "</div><br>";
 
         $query = "SELECT numero_camera, posti_letto, prezzo_notte FROM camere WHERE id_edificio = $id_edificio";
-        visualizza_tabella($connessione, $query, "../modifica/modifica_camera.php");
+        visualizza_tabella($connessione, $query, "");
         ?>
     </body>
 </html>

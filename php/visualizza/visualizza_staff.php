@@ -21,7 +21,7 @@ verifica_autorizzazione();
 
             echo "<div class='contenitore-pulsanti'>";
             echo "<a href= ../dashboard.php class='Redirect'>Indietro</a>";
-            pulsante_inserimento("../inserisci/inserisci_staff.php", "Nuovo membro staff");
+            pulsante_inserimento("../inserisci/inserisci_staff.php", "Nuovo Membro Staff");
             echo "</div><br>";
 
             $query = "SELECT * FROM staff";

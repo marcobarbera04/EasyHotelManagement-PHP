@@ -47,7 +47,7 @@ $is_admin = ($account['id_ruolo'] == 1);
             
             // Mostra il pulsante "Aggiungi hotel" solo per i gestori
             if (!$is_admin) {
-                echo "<a href='../inserisci/inserisci_hotel_gestito.php?id_account=".$id_account."' class='Redirect aggiungi'>Aggiungi hotel</a>";
+                echo "<a href='../inserisci/inserisci_hotel_gestito.php?id_account=".$id_account."' class='Redirect aggiungi'>Assegna Hotel in Gestione</a>";
             }
             echo "</div><br>";
 

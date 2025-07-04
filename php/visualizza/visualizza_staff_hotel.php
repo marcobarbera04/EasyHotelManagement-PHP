@@ -30,7 +30,7 @@ verifica_autorizzazione();
 
             echo "<div class='contenitore-pulsanti'>";
             echo "<a href='visualizza_hotel.php' class='Redirect'>Indietro</a>";
-            echo "<a href='../inserisci/inserisci_staff_hotel.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Aggiungi</a>";
+            echo "<a href='../inserisci/inserisci_staff_hotel.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Assegna Staff</a>";
             echo "</div><br>";
 
             // Query per visualizzare lo staff

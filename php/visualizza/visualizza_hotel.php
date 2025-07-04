@@ -39,9 +39,9 @@ else {
             echo "<div class='contenitore-pulsanti'>";
             echo "<a href='../dashboard.php' class='Redirect'>Indietro</a>";
             
-            // Mostra il pulsante "Aggiungi" solo se l'utente è amministratore
+            // Mostra il pulsante "Nuovo Hotel" solo se l'utente è amministratore
             if ($_SESSION['id_ruolo'] == 1) {
-                pulsante_inserimento("../inserisci/inserisci_hotel.php", "Aggiungi");
+                pulsante_inserimento("../inserisci/inserisci_hotel.php", "Nuovo Hotel");
             }
             
             echo "</div><br>";

@@ -22,7 +22,7 @@ verifica_autorizzazione();
             
             echo "<div class='contenitore-pulsanti'>";
             echo "<a href='visualizza_hotel.php' class='Redirect'>Indietro</a>";
-            echo "<a href='../inserisci/inserisci_edificio.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Aggiungi</a>";
+            echo "<a href='../inserisci/inserisci_edificio.php?id_hotel=$id_hotel' class='Redirect aggiungi'>Nuovo Edificio</a>";
             echo "</div><br>";
 
             $query = "SELECT id_hotel, id_edificio, nome FROM edifici WHERE id_hotel = $id_hotel";
