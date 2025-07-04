@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 24, 2025 at 04:43 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: mysql_ehm
+-- Generation Time: Jul 04, 2025 at 04:10 PM
+-- Server version: 9.3.0
+-- PHP Version: 8.2.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,13 +24,16 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `associazioni_ospite`
+-- Table structure for table `accounts`
 --
 
-CREATE TABLE `associazioni_ospite` (
-  `id_prenotazione` int(11) NOT NULL,
-  `codice_fiscale` varchar(16) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `accounts` (
+  `id_account` int NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `codice_fiscale` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id_ruolo` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -39,8 +42,10 @@ CREATE TABLE `associazioni_ospite` (
 --
 
 CREATE TABLE `camere` (
-  `numero_camera` varchar(11) NOT NULL,
-  `id_edificio` int(11) NOT NULL
+  `numero_camera` varchar(11) COLLATE utf8mb4_general_ci NOT NULL,
+  `id_edificio` int NOT NULL,
+  `posti_letto` int NOT NULL,
+  `prezzo_notte` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -50,9 +55,9 @@ CREATE TABLE `camere` (
 --
 
 CREATE TABLE `edifici` (
-  `id_edificio` int(11) NOT NULL,
-  `nome` varchar(45) NOT NULL,
-  `id_hotel` int(11) NOT NULL
+  `id_edificio` int NOT NULL,
+  `nome` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `id_hotel` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -62,9 +67,9 @@ CREATE TABLE `edifici` (
 --
 
 CREATE TABLE `email` (
-  `email` varchar(255) NOT NULL,
-  `descrizione` varchar(255) NOT NULL,
-  `id_hotel` int(11) NOT NULL
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `descrizione` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `id_hotel` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -74,14 +79,14 @@ CREATE TABLE `email` (
 --
 
 CREATE TABLE `fatture` (
-  `id_fattura` int(11) NOT NULL,
+  `id_fattura` int NOT NULL,
   `data_emissione` date NOT NULL,
   `importo_totale` double NOT NULL,
-  `numero_carta` varchar(16) DEFAULT NULL,
-  `cvc_carta` int(3) DEFAULT NULL,
-  `numero_conto_corrente` varchar(12) DEFAULT NULL,
-  `id_tipo_pagamento` int(11) NOT NULL,
-  `id_prenotazione` int(11) NOT NULL
+  `numero_carta` varchar(16) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `cvc_carta` int DEFAULT NULL,
+  `numero_conto_corrente` varchar(12) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id_tipo_pagamento` int NOT NULL,
+  `id_prenotazione` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -91,10 +96,22 @@ CREATE TABLE `fatture` (
 --
 
 CREATE TABLE `hotel` (
-  `id_hotel` int(11) NOT NULL,
-  `nome` varchar(45) NOT NULL,
-  `via` varchar(128) NOT NULL
+  `id_hotel` int NOT NULL,
+  `nome` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `via` varchar(128) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hotel_gestiti_account`
+--
+
+CREATE TABLE `hotel_gestiti_account` (
+  `id` int NOT NULL,
+  `id_account` int NOT NULL,
+  `id_hotel` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -103,8 +120,9 @@ CREATE TABLE `hotel` (
 --
 
 CREATE TABLE `impieghi_hotel` (
-  `codice_fiscale` varchar(16) NOT NULL,
-  `id_hotel` int(11) NOT NULL
+  `id_impiego` int NOT NULL,
+  `codice_fiscale` varchar(16) COLLATE utf8mb4_general_ci NOT NULL,
+  `id_hotel` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -114,8 +132,8 @@ CREATE TABLE `impieghi_hotel` (
 --
 
 CREATE TABLE `mansioni` (
-  `mansione` varchar(45) NOT NULL,
-  `descrizione` varchar(255) NOT NULL
+  `mansione` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `descrizione` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -125,8 +143,8 @@ CREATE TABLE `mansioni` (
 --
 
 CREATE TABLE `mansioni_staff` (
-  `codice_fiscale` varchar(16) NOT NULL,
-  `mansione` varchar(45) NOT NULL
+  `codice_fiscale` varchar(16) COLLATE utf8mb4_general_ci NOT NULL,
+  `mansione` varchar(45) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -136,12 +154,23 @@ CREATE TABLE `mansioni_staff` (
 --
 
 CREATE TABLE `ospiti` (
-  `codice_fiscale` varchar(16) NOT NULL,
-  `nome` varchar(45) NOT NULL,
-  `cognome` varchar(45) NOT NULL,
-  `eta` int(11) NOT NULL,
-  `telefono` varchar(10) DEFAULT NULL,
-  `indirizzo` varchar(255) NOT NULL
+  `codice_fiscale` varchar(16) COLLATE utf8mb4_general_ci NOT NULL,
+  `nome` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `cognome` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `eta` int NOT NULL,
+  `telefono` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `indirizzo` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ospiti_prenotazione`
+--
+
+CREATE TABLE `ospiti_prenotazione` (
+  `id_prenotazione` int NOT NULL,
+  `codice_fiscale` varchar(16) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -151,14 +180,26 @@ CREATE TABLE `ospiti` (
 --
 
 CREATE TABLE `prenotazioni` (
-  `id_prenotazione` int(11) NOT NULL,
+  `id_prenotazione` int NOT NULL,
   `check_in` date NOT NULL,
   `check_out` date NOT NULL,
   `attiva` tinyint(1) NOT NULL,
-  `id_hotel` int(11) NOT NULL,
-  `numero_camera` varchar(11) NOT NULL,
-  `codice_fiscale_cliente` varchar(16) NOT NULL
+  `id_hotel` int NOT NULL,
+  `numero_camera` varchar(11) COLLATE utf8mb4_general_ci NOT NULL,
+  `codice_fiscale_cliente` varchar(16) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ruoli_account`
+--
+
+CREATE TABLE `ruoli_account` (
+  `id_ruolo` int NOT NULL,
+  `nome_ruolo` varchar(255) NOT NULL,
+  `descrizione` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -167,9 +208,9 @@ CREATE TABLE `prenotazioni` (
 --
 
 CREATE TABLE `servizi` (
-  `id_servizio` int(11) NOT NULL,
-  `nome_servizio` varchar(45) NOT NULL,
-  `categoria_servizio` varchar(45) NOT NULL,
+  `id_servizio` int NOT NULL,
+  `nome_servizio` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `categoria_servizio` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
   `prezzo` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -180,8 +221,9 @@ CREATE TABLE `servizi` (
 --
 
 CREATE TABLE `servizi_offerti` (
-  `id_servizio` int(11) NOT NULL,
-  `id_hotel` int(11) NOT NULL
+  `id_servizio_offerto` int NOT NULL,
+  `id_servizio` int NOT NULL,
+  `id_hotel` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -191,8 +233,9 @@ CREATE TABLE `servizi_offerti` (
 --
 
 CREATE TABLE `servizi_prenotazioni` (
-  `id_prenotazione` int(11) NOT NULL,
-  `id_servizio` int(11) NOT NULL
+  `id_servizio_prenotazione` int NOT NULL,
+  `id_prenotazione` int NOT NULL,
+  `id_servizio` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -202,10 +245,10 @@ CREATE TABLE `servizi_prenotazioni` (
 --
 
 CREATE TABLE `staff` (
-  `codice_fiscale` varchar(16) NOT NULL,
-  `nome` varchar(45) NOT NULL,
-  `cognome` varchar(45) NOT NULL,
-  `eta` int(11) NOT NULL
+  `codice_fiscale` varchar(16) COLLATE utf8mb4_general_ci NOT NULL,
+  `nome` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `cognome` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `eta` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -215,9 +258,9 @@ CREATE TABLE `staff` (
 --
 
 CREATE TABLE `telefono` (
-  `numero` varchar(10) NOT NULL,
-  `descrizione` varchar(255) NOT NULL,
-  `id_hotel` int(11) NOT NULL
+  `numero` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `descrizione` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `id_hotel` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -227,8 +270,8 @@ CREATE TABLE `telefono` (
 --
 
 CREATE TABLE `tipi_pagamento` (
-  `id_tipo_pagamento` int(11) NOT NULL,
-  `metodo_pagamento` varchar(45) NOT NULL
+  `id_tipo_pagamento` int NOT NULL,
+  `metodo_pagamento` varchar(45) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -236,11 +279,12 @@ CREATE TABLE `tipi_pagamento` (
 --
 
 --
--- Indexes for table `associazioni_ospite`
+-- Indexes for table `accounts`
 --
-ALTER TABLE `associazioni_ospite`
-  ADD KEY `associazione_ospite_prenotazione` (`id_prenotazione`),
-  ADD KEY `associazione_ospite_ospite` (`codice_fiscale`);
+ALTER TABLE `accounts`
+  ADD PRIMARY KEY (`id_account`),
+  ADD KEY `codice_fiscale_account` (`codice_fiscale`),
+  ADD KEY `id_ruolo` (`id_ruolo`);
 
 --
 -- Indexes for table `camere`
@@ -278,9 +322,18 @@ ALTER TABLE `hotel`
   ADD PRIMARY KEY (`id_hotel`);
 
 --
+-- Indexes for table `hotel_gestiti_account`
+--
+ALTER TABLE `hotel_gestiti_account`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_account` (`id_account`),
+  ADD KEY `id_hotel` (`id_hotel`);
+
+--
 -- Indexes for table `impieghi_hotel`
 --
 ALTER TABLE `impieghi_hotel`
+  ADD PRIMARY KEY (`id_impiego`),
   ADD KEY `impiego_hotel_staff` (`codice_fiscale`),
   ADD KEY `impiego_hotel_hotel` (`id_hotel`);
 
@@ -304,6 +357,13 @@ ALTER TABLE `ospiti`
   ADD PRIMARY KEY (`codice_fiscale`);
 
 --
+-- Indexes for table `ospiti_prenotazione`
+--
+ALTER TABLE `ospiti_prenotazione`
+  ADD KEY `associazione_ospite_prenotazione` (`id_prenotazione`),
+  ADD KEY `associazione_ospite_ospite` (`codice_fiscale`);
+
+--
 -- Indexes for table `prenotazioni`
 --
 ALTER TABLE `prenotazioni`
@@ -311,6 +371,12 @@ ALTER TABLE `prenotazioni`
   ADD KEY `prenotazioni_hotel` (`id_hotel`),
   ADD KEY `prenotazioni_cliente` (`codice_fiscale_cliente`),
   ADD KEY `prenotazioni_camera` (`numero_camera`);
+
+--
+-- Indexes for table `ruoli_account`
+--
+ALTER TABLE `ruoli_account`
+  ADD PRIMARY KEY (`id_ruolo`);
 
 --
 -- Indexes for table `servizi`
@@ -322,6 +388,7 @@ ALTER TABLE `servizi`
 -- Indexes for table `servizi_offerti`
 --
 ALTER TABLE `servizi_offerti`
+  ADD PRIMARY KEY (`id_servizio_offerto`),
   ADD KEY `servizi_offerti_servizio` (`id_servizio`),
   ADD KEY `servizi_offerti_hotel` (`id_hotel`);
 
@@ -329,6 +396,7 @@ ALTER TABLE `servizi_offerti`
 -- Indexes for table `servizi_prenotazioni`
 --
 ALTER TABLE `servizi_prenotazioni`
+  ADD PRIMARY KEY (`id_servizio_prenotazione`),
   ADD KEY `servizi_prenotazioni_prenotazione` (`id_prenotazione`),
   ADD KEY `servizi_prenotazioni_servizio` (`id_servizio`);
 
@@ -356,51 +424,87 @@ ALTER TABLE `tipi_pagamento`
 --
 
 --
+-- AUTO_INCREMENT for table `accounts`
+--
+ALTER TABLE `accounts`
+  MODIFY `id_account` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `edifici`
 --
 ALTER TABLE `edifici`
-  MODIFY `id_edificio` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_edificio` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `fatture`
 --
 ALTER TABLE `fatture`
-  MODIFY `id_fattura` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_fattura` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `hotel`
 --
 ALTER TABLE `hotel`
-  MODIFY `id_hotel` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_hotel` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `hotel_gestiti_account`
+--
+ALTER TABLE `hotel_gestiti_account`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `impieghi_hotel`
+--
+ALTER TABLE `impieghi_hotel`
+  MODIFY `id_impiego` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `prenotazioni`
 --
 ALTER TABLE `prenotazioni`
-  MODIFY `id_prenotazione` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_prenotazione` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `ruoli_account`
+--
+ALTER TABLE `ruoli_account`
+  MODIFY `id_ruolo` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `servizi`
 --
 ALTER TABLE `servizi`
-  MODIFY `id_servizio` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_servizio` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `servizi_offerti`
+--
+ALTER TABLE `servizi_offerti`
+  MODIFY `id_servizio_offerto` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `servizi_prenotazioni`
+--
+ALTER TABLE `servizi_prenotazioni`
+  MODIFY `id_servizio_prenotazione` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tipi_pagamento`
 --
 ALTER TABLE `tipi_pagamento`
-  MODIFY `id_tipo_pagamento` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_tipo_pagamento` int NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `associazioni_ospite`
+-- Constraints for table `accounts`
 --
-ALTER TABLE `associazioni_ospite`
-  ADD CONSTRAINT `associazione_ospite_ospite` FOREIGN KEY (`codice_fiscale`) REFERENCES `ospiti` (`codice_fiscale`),
-  ADD CONSTRAINT `associazione_ospite_prenotazione` FOREIGN KEY (`id_prenotazione`) REFERENCES `prenotazioni` (`id_prenotazione`);
+ALTER TABLE `accounts`
+  ADD CONSTRAINT `codice_fiscale_account` FOREIGN KEY (`codice_fiscale`) REFERENCES `staff` (`codice_fiscale`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `id_ruolo` FOREIGN KEY (`id_ruolo`) REFERENCES `ruoli_account` (`id_ruolo`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `camere`
@@ -428,6 +532,13 @@ ALTER TABLE `fatture`
   ADD CONSTRAINT `fatture_tipo_pagamento` FOREIGN KEY (`id_tipo_pagamento`) REFERENCES `tipi_pagamento` (`id_tipo_pagamento`);
 
 --
+-- Constraints for table `hotel_gestiti_account`
+--
+ALTER TABLE `hotel_gestiti_account`
+  ADD CONSTRAINT `id_account` FOREIGN KEY (`id_account`) REFERENCES `accounts` (`id_account`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `id_hotel` FOREIGN KEY (`id_hotel`) REFERENCES `hotel` (`id_hotel`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
 -- Constraints for table `impieghi_hotel`
 --
 ALTER TABLE `impieghi_hotel`
@@ -440,6 +551,13 @@ ALTER TABLE `impieghi_hotel`
 ALTER TABLE `mansioni_staff`
   ADD CONSTRAINT `mansione_staff_staff` FOREIGN KEY (`codice_fiscale`) REFERENCES `staff` (`codice_fiscale`),
   ADD CONSTRAINT `mansione_staff_tipo_mansione` FOREIGN KEY (`mansione`) REFERENCES `mansioni` (`mansione`);
+
+--
+-- Constraints for table `ospiti_prenotazione`
+--
+ALTER TABLE `ospiti_prenotazione`
+  ADD CONSTRAINT `associazione_ospite_ospite` FOREIGN KEY (`codice_fiscale`) REFERENCES `ospiti` (`codice_fiscale`),
+  ADD CONSTRAINT `associazione_ospite_prenotazione` FOREIGN KEY (`id_prenotazione`) REFERENCES `prenotazioni` (`id_prenotazione`);
 
 --
 -- Constraints for table `prenotazioni`
