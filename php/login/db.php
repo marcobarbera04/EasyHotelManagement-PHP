@@ -3,7 +3,7 @@
     $host = "mysql_ehm";    // nome del servizio Docker
     $user = "root";
     $password = "";
-    $database = "ehm";
+    $database = "Easy-Hotel-Management";
         
     //oggetto mysqli
     $connessione = new mysqli($host, $user, $password, $database);
