@@ -237,3 +237,13 @@ input[type='text']:focus {
     font-size: 1.1em;
     border-top: 2px solid #ddd;
 }
+
+.checkbox-hotel {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.checkbox-hotel input[type="checkbox"] {
+    margin-right: 10px;
+}

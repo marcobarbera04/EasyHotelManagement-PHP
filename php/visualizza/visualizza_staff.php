@@ -1,3 +1,10 @@
+<?php
+require_once "../login/db.php";
+require_once "../login/funzioni_autorizzazione.php";
+require_once "../funzioni.php";
+
+verifica_autorizzazione();
+?>
 <!DOCTYPE html>
 <html>
 <style>
@@ -8,10 +15,6 @@
     </head>
     <body>    
         <?php
-            include "../login/db.php";
-            include "../login/funzioni_autorizzazione.php";
-            include "../funzioni.php";
-
             $query_nome_hotel = "SELECT * FROM hotel";
 
             echo "<div class=head><H1>Staff completo<br></div>";

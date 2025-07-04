@@ -1,3 +1,9 @@
+<?php
+require_once "../login/db.php";
+require_once "../login/funzioni_autorizzazione.php";
+require_once "../funzioni.php";
+verifica_autorizzazione();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,10 +12,6 @@
     </head>
     <body>    
         <?php
-            include "../login/db.php";
-            include "../login/funzioni_autorizzazione.php";
-            include "../funzioni.php";
-
             // Ottieni id_prenotazione da GET
             $id_prenotazione = $_GET['id_prenotazione'] ?? null;
             

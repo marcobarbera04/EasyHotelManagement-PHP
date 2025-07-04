@@ -1,12 +1,10 @@
 <?php
-session_start();
-include "../login/db.php";
-include "../login/funzioni_autorizzazione.php";
-include "../funzioni.php";
-
-// Verifica autorizzazione (deve essere dopo session_start)
+require_once "../login/db.php";
+require_once "../login/funzioni_autorizzazione.php";
+require_once "../funzioni.php";
 verifica_autorizzazione();
-
+?>
+<?php
 // Se l'utente è un amministratore (ruolo 1), mostra tutti gli hotel
 if ($_SESSION['id_ruolo'] == 1) {
     $query = "SELECT id_hotel, nome, via FROM hotel";

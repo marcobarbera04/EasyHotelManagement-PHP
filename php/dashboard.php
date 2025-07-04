@@ -1,3 +1,9 @@
+<?php
+require_once "login/db.php";
+require_once "login/funzioni_autorizzazione.php";
+require_once "funzioni.php";
+verifica_autorizzazione();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,6 +21,9 @@
         <div class = 'contenitore-redirect'><a href= visualizza/visualizza_servizi.php class = 'btn-azione'>Visualizza tutti i servizi</a></div>
         <div class = 'contenitore-redirect'><a href= visualizza/visualizza_mansioni.php class = 'btn-azione'>Visualizza mansioni</a></div>
         <div class = 'contenitore-redirect'><a href= visualizza/visualizza_staff.php class = 'btn-azione'>Visualizza tutti i membri dello staff</a></div>
+        <?php if ($_SESSION['id_ruolo'] == 1): ?>
+            <div class = 'contenitore-redirect'><a href= visualizza/visualizza_accounts.php class = 'btn-azione'>Visualizza tutti gli account</a></div>
+        <?php endif; ?>
         </div>
     </body>
 </html>

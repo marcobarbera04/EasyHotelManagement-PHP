@@ -1,3 +1,9 @@
+<?php
+require_once "../login/db.php";
+require_once "../login/funzioni_autorizzazione.php";
+require_once "../funzioni.php";
+verifica_autorizzazione();
+?>
 <!DOCTYPE html>
 <html>
 <style>
@@ -8,10 +14,6 @@
     </head>
     <body>    
         <?php
-            include "../login/db.php";
-            include "../login/funzioni_autorizzazione.php";
-            include "../funzioni.php";
-
             echo "<div class=head><H1>Servizi<br></div>";
 
             echo "<div class='contenitore-pulsanti'>";

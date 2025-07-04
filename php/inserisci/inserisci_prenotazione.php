@@ -1,3 +1,9 @@
+<?php
+require_once "../login/db.php";
+require_once "../login/funzioni_autorizzazione.php";
+require_once "../funzioni.php";
+verifica_autorizzazione();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -37,10 +43,6 @@
     </head>
     <body>    
         <?php
-            include "../login/db.php";
-            include "../login/funzioni_autorizzazione.php";
-            include "../funzioni.php";
-
             $id_hotel = $_GET['id_hotel'] ?? $_POST['id_hotel'] ?? null;
             
             // Carica gli ospiti per il select

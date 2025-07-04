@@ -1,3 +1,9 @@
+<?php
+require_once "../login/db.php";
+require_once "../login/funzioni_autorizzazione.php";
+require_once "../funzioni.php";
+verifica_autorizzazione();
+?>
 <!DOCTYPE html>
 <html>
 <style>
@@ -8,10 +14,6 @@
     </head>
     <body>    
         <?php
-            include "../login/db.php";
-            include "../login/funzioni_autorizzazione.php";
-            include "../funzioni.php";
-
             $id_hotel = $_GET['id_hotel'] ?? $_POST['id_hotel'] ?? null;
             $query_nome_hotel = "SELECT nome FROM hotel WHERE id_hotel = $id_hotel LIMIT 1";
             $nome_hotel = salva_primo_campo($connessione, $query_nome_hotel);

@@ -5,7 +5,7 @@ function verifica_autorizzazione($ruolo_richiesto = null, $id_hotel = null) {
     }
 
     if (!isset($_SESSION['id_account'])) {
-        header("Location: ../index.php");
+        header("Location: /index.php");
         exit();
     }
 
