@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql_ehm
--- Generation Time: Jul 04, 2025 at 04:39 PM
+-- Generation Time: Jul 08, 2025 at 12:52 PM
 -- Server version: 9.3.0
 -- PHP Version: 8.2.27
 
@@ -28,7 +28,8 @@ SET time_zone = "+00:00";
 INSERT INTO `accounts` (`id_account`, `email`, `password`, `codice_fiscale`, `id_ruolo`) VALUES
 (1, 'marco@gmail.com', 'marco', 'MRNSEB04E10F130G', 1),
 (2, 'seby@gmail.com', 'seby', 'MRNSEB04E10F130G', 1),
-(3, 'daniele@gmail.com', 'daniele', 'DSTDNL103AD30FAD', 2);
+(3, 'daniele@gmail.com', 'daniele', 'DSTDNL103AD30FAD', 2),
+(4, 'giorgio@gmail.com', 'giorgio', 'GDRADSADAAFG150F', 2);
 
 --
 -- Dumping data for table `camere`
@@ -38,12 +39,16 @@ INSERT INTO `camere` (`numero_camera`, `id_edificio`, `posti_letto`, `prezzo_not
 ('A100', 1, 3, 25),
 ('A101', 1, 5, 45),
 ('A102', 1, 6, 75),
+('A103', 1, 4, 50),
+('A104', 1, 5, 45),
 ('A150', 3, 2, 45),
 ('A151', 3, 6, 45),
 ('A153', 3, 3, 45),
+('A154', 3, 3, 25),
 ('B100', 2, 2, 25),
 ('B101', 2, 4, 35),
 ('B103', 2, 5, 55),
+('B104', 2, 2, 30),
 ('C101', 4, 3, 43),
 ('C102', 4, 5, 50),
 ('C103', 4, 4, 65);
@@ -78,7 +83,15 @@ INSERT INTO `fatture` (`id_fattura`, `data_emissione`, `importo_totale`, `numero
 (2, '2025-07-04', 50, NULL, NULL, NULL, 3, 2),
 (3, '2025-07-04', 90, NULL, NULL, NULL, 3, 3),
 (4, '2025-07-04', 400, NULL, NULL, NULL, 3, 4),
-(5, '2025-07-04', 110, NULL, NULL, '232324242424', 2, 5);
+(5, '2025-07-04', 110, NULL, NULL, '232324242424', 2, 5),
+(6, '2025-07-08', 25, NULL, NULL, NULL, 3, 6),
+(7, '2025-07-08', 45, NULL, NULL, NULL, 3, 7),
+(8, '2025-07-08', 375, NULL, NULL, NULL, 3, 8),
+(9, '2025-07-08', 225, NULL, NULL, NULL, 3, 9),
+(10, '2025-07-08', 400, NULL, NULL, NULL, 3, 10),
+(11, '2025-07-08', 500, NULL, NULL, '233435666444', 2, 11),
+(12, '2025-07-08', 130, NULL, NULL, NULL, 3, 12),
+(13, '2025-07-08', 455, NULL, NULL, NULL, 3, 13);
 
 --
 -- Dumping data for table `hotel`
@@ -90,13 +103,27 @@ INSERT INTO `hotel` (`id_hotel`, `nome`, `via`) VALUES
 (3, 'Hotel Oracle Java', 'Via Java, 64');
 
 --
+-- Dumping data for table `hotel_gestiti_account`
+--
+
+INSERT INTO `hotel_gestiti_account` (`id`, `id_account`, `id_hotel`) VALUES
+(1, 3, 2),
+(2, 3, 3),
+(3, 4, 3);
+
+--
 -- Dumping data for table `impieghi_hotel`
 --
 
 INSERT INTO `impieghi_hotel` (`id_impiego`, `codice_fiscale`, `id_hotel`) VALUES
 (1, 'MRNSEB04E10F130G', 1),
 (2, 'BRBMRC04E10F158G', 1),
-(3, 'NLMRTE02E136F23F', 2);
+(3, 'NLMRTE02E136F23F', 2),
+(4, 'CLSDAESADA43D234', 1),
+(5, 'BRBMRC04E10F158G', 2),
+(6, 'MRNSEB04E10F130G', 2),
+(7, 'GDRADSADAAFG150F', 3),
+(8, 'DSTDNL103AD30FAD', 3);
 
 --
 -- Dumping data for table `mansioni`
@@ -119,7 +146,9 @@ INSERT INTO `mansioni_staff` (`codice_fiscale`, `mansione`) VALUES
 ('DSTDNL103AD30FAD', 'Inserviente'),
 ('CLSDAESADA43D234', 'Cuoco'),
 ('NLMRTE02E136F23F', 'Receptionist'),
-('NLMRTE02E136F23F', 'Portiere');
+('NLMRTE02E136F23F', 'Portiere'),
+('GDRADSADAAFG150F', 'Cuoco'),
+('GDRADSADAAFG150F', 'Inserviente');
 
 --
 -- Dumping data for table `ospiti`
@@ -347,7 +376,26 @@ INSERT INTO `ospiti_prenotazione` (`id_prenotazione`, `codice_fiscale`) VALUES
 (5, 'FRMSFN51M01FXW6R'),
 (5, 'TSXLVC17A28BGCBT'),
 (5, 'BSCBCC53D0523W0L'),
-(5, 'CVNLMX68P08RWYNW');
+(5, 'CVNLMX68P08RWYNW'),
+(6, 'BMBBDS47A23J5G6P'),
+(6, 'TSCSLV26D24VYRNL'),
+(6, 'PRZMLN44T13CNT3Y'),
+(7, 'NGLSLV30A303WS1M'),
+(7, 'BTGMHL04E31K1Y2C'),
+(7, 'TRTGRG66E20K1R7R'),
+(8, 'PGNCGR74S13W579F'),
+(8, 'GBBGNN48C10GXC7W'),
+(9, 'MDRNNX58C07M3PFF'),
+(9, 'PRTMRN08C25Q7PGZ'),
+(9, 'MRCVLR04A22V2BJW'),
+(10, 'BTGMHL04E31K1Y2C'),
+(10, 'SSMJND26B1168MSR'),
+(11, 'TRNSLV09S02CSDLK'),
+(11, 'DNZVCN20R17WPGCK'),
+(12, 'CCRCCC87E25SBN7L'),
+(12, 'BTGMHL04E31K1Y2C'),
+(13, 'PLTSXX48S13Q8G9C'),
+(13, 'STCGRC20M19GJGWG');
 
 --
 -- Dumping data for table `prenotazioni`
@@ -358,7 +406,15 @@ INSERT INTO `prenotazioni` (`id_prenotazione`, `check_in`, `check_out`, `attiva`
 (2, '2025-07-22', '2025-07-24', 1, 1, 'B100', 'PRZMLN44T13CNT3Y'),
 (3, '2025-07-04', '2025-07-06', 1, 2, 'A150', 'TSXLVC17A28BGCBT'),
 (4, '2025-07-11', '2025-07-19', 1, 3, 'C102', 'TRCRFL34M03JV87F'),
-(5, '2025-07-29', '2025-07-31', 1, 1, 'B103', 'FRMSFN51M01FXW6R');
+(5, '2025-07-29', '2025-07-31', 1, 1, 'B103', 'FRMSFN51M01FXW6R'),
+(6, '2025-08-13', '2025-08-14', 1, 1, 'B100', 'BMBBDS47A23J5G6P'),
+(7, '2025-07-15', '2025-07-16', 1, 2, 'A153', 'NGLSLV30A303WS1M'),
+(8, '2025-10-15', '2025-10-30', 1, 2, 'A154', 'PGNCGR74S13W579F'),
+(9, '2025-08-29', '2025-09-03', 1, 2, 'A151', 'MDRNNX58C07M3PFF'),
+(10, '2025-11-13', '2025-11-21', 1, 1, 'A103', 'BTGMHL04E31K1Y2C'),
+(11, '2025-12-30', '2026-01-09', 1, 1, 'A103', 'TRNSLV09S02CSDLK'),
+(12, '2025-07-16', '2025-07-18', 1, 3, 'C103', 'CCRCCC87E25SBN7L'),
+(13, '2025-11-13', '2025-11-20', 1, 3, 'C103', 'PLTSXX48S13Q8G9C');
 
 --
 -- Dumping data for table `ruoli_account`
@@ -414,6 +470,7 @@ INSERT INTO `staff` (`codice_fiscale`, `nome`, `cognome`, `eta`) VALUES
 ('BRBMRC04E10F158G', 'Marco', 'Barbera', 21),
 ('CLSDAESADA43D234', 'Dalila', 'Clemente', 32),
 ('DSTDNL103AD30FAD', 'Daniele', 'Di Santo', 21),
+('GDRADSADAAFG150F', 'Giorgio', 'Sicilia', 32),
 ('MRNSEB04E10F130G', 'Sebastiano', 'Marino', 21),
 ('NLMRTE02E136F23F', 'Nicola', 'La Torre', 60);
 
